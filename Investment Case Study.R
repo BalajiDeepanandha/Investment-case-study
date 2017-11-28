@@ -45,3 +45,15 @@ vcg_total_funding <- summarise(venture_country_groups, sum(raised_amount_usd, na
 names(vcg_total_funding) <- c("country_code","total_funding_amt")
 vcg_total_funding <- na.omit(vcg_total_funding)
 arrange(top_n(vcg_total_funding, 9, total_funding_amt), desc(total_funding_amt))
+
+#checkpoint 4
+
+mapping <- read.csv("mapping.csv", stringsAsFactors = FALSE, check.names = FALSE, na.strings=c("","NA"))
+
+mapping_long <- gather(mapping, major_category, my_val, 2:10 )
+mapping_long <- mapping_long[!(mapping_long$my_val == 0),]
+mapping_long <- mapping_long[,-3]
+
+master_frame <- separate(master_frame, category_list, c("primary_sector"), sep = "[|]", remove = F, extra = "drop" )
+master_frame <- merge(master_frame, mapping_long, by.x="primary_sector", by.y = "category_list", all.x = T)
+
