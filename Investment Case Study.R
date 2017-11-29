@@ -57,3 +57,42 @@ mapping_long <- mapping_long[,-3]
 master_frame <- separate(master_frame, category_list, c("primary_sector"), sep = "[|]", remove = F, extra = "drop" )
 master_frame <- merge(master_frame, mapping_long, by.x="primary_sector", by.y = "category_list", all.x = T)
 
+#Checkpoint 5
+venture_threshold_invest <- filter(master_frame,funding_round_type  == "venture",  raised_amount_usd >= 5000000 & raised_amount_usd < 15000000  ) 
+
+d1 <- filter(venture_threshold_invest, country_code == "USA")
+d2 <- filter(venture_threshold_invest, country_code == "GBR")
+d3 <- filter(venture_threshold_invest, country_code == "IND")
+
+#d1-> USA
+usa_group <- group_by(d1, major_category) 
+usa_invest_amount <- summarise(usa_group, tot_amt_major_cateogory = sum(raised_amount_usd))
+usa_invest_count <- summarise(usa_group, tot_cnt_major_cateogory = n())
+
+d1 <- merge(d1, usa_invest_amount, by = "major_category")
+d1 <- merge(d1, usa_invest_count, by = "major_category") 
+
+#d2-> GBR
+
+gbr_group <- group_by(d2, major_category) 
+gbr_invest_amount <- summarise(gbr_group, tot_amt_major_cateogory = sum(raised_amount_usd))
+gbr_invest_count <- summarise(gbr_group, tot_cnt_major_cateogory = n())
+
+d2 <- merge(d2, gbr_invest_amount, by = "major_category")
+d2 <- merge(d2, gbr_invest_count, by = "major_category") 
+
+
+#d3-> IND
+
+ind_group <- group_by(d3, major_category) 
+ind_invest_amount <- summarise(ind_group, tot_amt_major_cateogory = sum(raised_amount_usd))
+ind_invest_count <- summarise(ind_group, tot_cnt_major_cateogory = n())
+
+d3 <- merge(d3, ind_invest_amount, by = "major_category")
+d3 <- merge(d3, ind_invest_count, by = "major_category") 
+
+
+nrow(d1)
+sum(d1$raised_amount_usd)
+View(usa_invest_count)
+
