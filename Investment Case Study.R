@@ -91,8 +91,21 @@ ind_invest_count <- summarise(ind_group, tot_cnt_major_cateogory = n())
 d3 <- merge(d3, ind_invest_amount, by = "major_category")
 d3 <- merge(d3, ind_invest_count, by = "major_category") 
 
-
+#TABLE 5.1: C1
 nrow(d1)
 sum(d1$raised_amount_usd)
-View(usa_invest_count)
+arrange(top_n(usa_invest_count, 3, tot_cnt_major_cateogory), desc(tot_cnt_major_cateogory))
+d1 %>% group_by(major_category) %>% filter(raised_amount_usd == max(raised_amount_usd)) %>% select(company_permalink, major_category, raised_amount_usd) 
 
+
+#TABLE 5.1: C2
+nrow(d2)
+sum(d2$raised_amount_usd)
+arrange(top_n(gbr_invest_count, 3, tot_cnt_major_cateogory), desc(tot_cnt_major_cateogory))
+d2 %>% group_by(major_category) %>% filter(raised_amount_usd == max(raised_amount_usd)) %>% select(company_permalink, major_category, raised_amount_usd) 
+
+#TABLE 5.1: C3
+nrow(d3)
+sum(d3$raised_amount_usd)
+arrange(top_n(ind_invest_count, 3, tot_cnt_major_cateogory), desc(tot_cnt_major_cateogory))
+d3 %>% group_by(major_category) %>% filter(raised_amount_usd == max(raised_amount_usd)) %>% select(company_permalink, major_category, raised_amount_usd) 
